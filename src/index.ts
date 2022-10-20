@@ -1,8 +1,10 @@
 import checkRawData from "./services/bootstrap.js";
+import startServer from "./server/index.js";
 
-
-(async function  () {
+(async function () {
 
     const initialize = await checkRawData();
-    console.log(initialize);
-})()
+    if (initialize) {
+        startServer();
+    }
+})();
