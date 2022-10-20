@@ -7,19 +7,16 @@ let TOTAL_SEARCH_TIME = 0;
 dotenv.config();
 
 (function startFetching() {
-
     const reader = readline.createInterface({ input: process.stdin, output: process.stdout });
     reader.question("This operation may take a few minutes. Continue ? (Y / N) ", function (answer) {
         answer === "y" || answer === "Y" ? printFetching(reader.output) : console.log("canceled");
         reader.close();
     });
-
 })();
 
 function printFetching(output) {
 
     const interval = setInterval(() => {
-
         output.write(".");
         if (TOTAL_SEARCH_TIME % 4 === 0) {
             readline.clearLine(output, 0);
@@ -33,7 +30,6 @@ function printFetching(output) {
 };
 
 async function runAxios(interval) {
-
     await axios
         .get(process.env.API_URL)
         .then(({ data }) => saveData(JSON.stringify(data)))
@@ -45,11 +41,21 @@ async function runAxios(interval) {
 function saveData(data) {
 
     const basedata = "./api/rawdata.json";
+    const oldData = "./api/processed.json";
+
     console.log(`\ntotal search time: ${TOTAL_SEARCH_TIME + "s"}`);
 
-    fs.unlink(basedata, function (err) {
-        if (!err) console.log("old data deleted");
-    });
+    if (fs.existsSync(basedata)) {
+        fs.unlink(basedata, function (err) {
+            if (!err) console.log("old basedata deleted");
+        });
+    };
+
+    if (fs.existsSync(oldData)) {
+        fs.unlink(oldData, function (err) {
+            if (!err) console.log("old processed data deleted");
+        });
+    };
 
     fs.writeFile(basedata, data, (err) => {
         if (err) { newThrow("an error occurred while saving the data", err) };

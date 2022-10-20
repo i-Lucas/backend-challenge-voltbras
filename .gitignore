@@ -4,3 +4,6 @@ node_modules/
 
 # big raw data
 api/rawdata.json
+
+# processed data
+api/processed.json

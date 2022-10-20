@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "fetch": "node api/fetch.js",
+    "update": "node api/fetch.js",
     "db:generate": "npx prisma migrate dev"
   },
   "keywords": [],
