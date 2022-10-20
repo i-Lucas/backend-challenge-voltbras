@@ -55,10 +55,13 @@ async function addNewPlanets(list: planets[]): Promise<Boolean> {
     if (planetsDBidList.length === 0) {
         console.log(list.length + " suitable planets registered in the system");
         return await planetsRepository.saveSuitablePlanets(list);
+    };
 
-    } else return await searchNewRecords(list, planetsDBidList);
+    if (planetsDBidList.length !== list.length) {
+        return await searchNewRecords(list, planetsDBidList);
+    }
 
-    // se a lista do db tiver um tamanho diferente da lista então é pq tem planeta novo
+    else return true;
 };
 
 async function searchNewRecords(list: planets[], dblist: { id: number; }[]): Promise<Boolean> {
