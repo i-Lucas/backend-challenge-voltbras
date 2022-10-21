@@ -10,6 +10,13 @@ const typeDefs = gql`
         hasStation: Boolean!
     }
 
+    type Station {
+        id: Int!,
+        planetID: Int!,
+        isRecharging: Boolean!,
+        rechargeEnds: String!
+    }
+
     type User {
         id: Int!,
         email: String!,
@@ -18,16 +25,17 @@ const typeDefs = gql`
 
     type Query {
         suitablePlanets: [Planet!]!
-        stations: [Planet!]!
+        stations: [Station!]!
     }
 
     type Mutation {
 
-        installStation (id: Int!): ID!
+        installStation (planetID: Int!): ID!
         signup (email: String!, password: String!): ID!
         signin (email: String!, password: String!): String!
-    }
 
+        recharge (token: String!, stationID: Int!, hours: Int!): ID!
+    }
 `;
 
 export default typeDefs;

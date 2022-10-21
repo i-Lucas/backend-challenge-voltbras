@@ -12,10 +12,39 @@ model planets {
   name       String
   mass       Float
   hasStation Boolean
+
+  stations stations[]
 }
 
 model users {
   id       Int    @id @default(autoincrement())
   email    String @unique
   password String
+
+  refills refills[]
+}
+
+model stations {
+  id Int @id @default(autoincrement())
+
+  planetID Int
+  planets  planets @relation(fields: [planetID], references: [id])
+
+  isRecharging Boolean
+  rechargeEnds Float
+
+  refills refills[]
+}
+
+model refills {
+  id Int @id @default(autoincrement())
+
+  userID Int
+  user   users @relation(fields: [userID], references: [id])
+
+  stationID Int
+  station   stations @relation(fields: [stationID], references: [id])
+
+  startRecharge Float
+  endRecharge   Float
 }

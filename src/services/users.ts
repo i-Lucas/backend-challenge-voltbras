@@ -25,9 +25,21 @@ async function signin(email: string, password: string): Promise<String> {
     return jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn });
 };
 
+async function getUserByToken(token: string): Promise<users> {
+
+    const tokenData = jwt.verify(token, process.env.JWT_SECRET);
+    if (!tokenData) throw new Error("401 not authorized. please login before continuing")
+
+    const user = await usersRepository.getUserByEmail((<users>tokenData).email);
+    if (!user) throw new Error("401 invalid token");
+    
+    return user;
+};
+
 const userServices = {
     signup,
-    signin
+    signin,
+    getUserByToken
 };
 
 export default userServices;

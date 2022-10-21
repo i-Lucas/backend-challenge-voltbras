@@ -1,4 +1,9 @@
+# fat
 node_modules/
+
+# dev migrations
+prisma/migrations
+
 # environment variables
 .env
 
@@ -7,3 +12,6 @@ api/rawdata.json
 
 # processed data
 api/processed.json
+
+# todolist
+todo.txt

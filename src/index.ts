@@ -12,5 +12,6 @@ import resolvers from "./graphql/resolvers.js";
         new ApolloServer({ typeDefs, resolvers }).listen().then(({ url }) => {
             console.log(`http server running on ${url}`)
         });
-    }
+    };
+    
 })();
