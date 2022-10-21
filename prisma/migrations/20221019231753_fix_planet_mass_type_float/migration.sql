@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "planets" ALTER COLUMN "mass" SET DATA TYPE DOUBLE PRECISION;
