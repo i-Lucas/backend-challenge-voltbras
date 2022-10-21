@@ -2,7 +2,7 @@ import { gql } from "apollo-server";
 
 const typeDefs = gql`
 
-    type Planets {
+    type Planet {
     
         id: Int!, 
         name: String!,
@@ -10,13 +10,22 @@ const typeDefs = gql`
         hasStation: Boolean!
     }
 
+    type User {
+        id: Int!,
+        email: String!,
+        password: String!
+    }
+
     type Query {
-        suitablePlanets: [Planets!]!
-        stations: [Planets!]!
+        suitablePlanets: [Planet!]!
+        stations: [Planet!]!
     }
 
     type Mutation {
+
         installStation (id: Int!): ID!
+        signup (email: String!, password: String!): ID!
+        signin (email: String!, password: String!): String!
     }
 
 `;

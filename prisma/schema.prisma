@@ -13,3 +13,9 @@ model planets {
   mass       Float
   hasStation Boolean
 }
+
+model users {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+}
