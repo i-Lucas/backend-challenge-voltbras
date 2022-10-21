@@ -26,9 +26,19 @@ async function getAllUserRecharges(userID: number): Promise<refills[]> {
     })
 };
 
+async function getStationRechargeHistory(stationID: number): Promise<refills[]> {
+
+    return await prisma.refills.findMany({
+        where: {
+            id: stationID
+        }
+    })
+};
+
 const rechargesRepository = {
     registerRecharge,
-    getAllUserRecharges
+    getAllUserRecharges,
+    getStationRechargeHistory
 };
 
 export default rechargesRepository;

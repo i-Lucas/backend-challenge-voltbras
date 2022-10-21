@@ -17,10 +17,12 @@ const typeDefs = gql`
         rechargeEnds: String!
     }
 
-    type User {
-        id: Int!,
-        email: String!,
-        password: String!
+    type StationHistory {
+        id: Int!
+        user: String!
+        stationID: Int!
+        date: String!
+        time: String!
     }
 
     type Query {
@@ -35,6 +37,7 @@ const typeDefs = gql`
         signin (email: String!, password: String!): String!
 
         recharge (token: String!, stationID: Int!, hours: Int!): ID!
+        stationHistory(stationID: Int!): [StationHistory]!
     }
 `;
 

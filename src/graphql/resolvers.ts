@@ -17,7 +17,11 @@ const resolvers = {
         signup: async (_: any, { email, password }: any) => await userServices.signup(email, password),
         signin: async (_: any, { email, password }: any) => await userServices.signin(email, password),
 
-        recharge: async (_: any, { token, stationID, hours }: any) => await stationService.rechargeStation(token, stationID, hours)
+        recharge: async (_: any, { token, stationID, hours }: any) => {
+            return await stationService.rechargeStation(token, stationID, hours)
+        },
+
+        stationHistory: async (_: any, { stationID }: any) => await stationService.getStationHistory(stationID)
     }
 };
 

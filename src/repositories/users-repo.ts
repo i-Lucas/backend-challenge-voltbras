@@ -22,9 +22,21 @@ async function getUserByEmail(email: string): Promise<users> {
     });
 };
 
+async function getUserEmailByID(userID: number): Promise<users["email"]> {
+
+    const { email } = await prisma.users.findFirst({
+        where: {
+            id: userID
+        }
+    });
+
+    return email;
+};
+
 const usersRepository = {
     createNewUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserEmailByID
 };
 
 export default usersRepository;

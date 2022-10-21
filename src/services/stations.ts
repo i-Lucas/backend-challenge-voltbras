@@ -1,9 +1,19 @@
 import userServices from "./users.js";
 import { stations } from "@prisma/client";
-import rechargesRepository from "../repositories/refills.js";
+import usersRepository from "../repositories/users-repo.js";
+import rechargesRepository from "../repositories/refills-repo.js";
 import stationsRepository from "../repositories/stations-repo.js";
+import { formatedDate, formatedHour, formatTime } from "../utils/time.js";
 
 type RechargeEndsFormatted = Omit<stations, "rechargeEnds">;
+
+type StationHistory = {
+    id: number
+    user: string
+    stationID: number
+    date: String
+    time: String
+};
 
 async function getAllStations(): Promise<RechargeEndsFormatted[]> {
 
@@ -14,12 +24,11 @@ async function getAllStations(): Promise<RechargeEndsFormatted[]> {
         return list.map(station => {
             return {
                 ...station,
-                rechargeEnds:
-                    station.rechargeEnds !== 0 ?
-                        formatTime(station.rechargeEnds)
-                        : "not started"
-            }
-        })
+                rechargeEnds: station.rechargeEnds !== 0 ?
+                    formatTime(station.rechargeEnds) :
+                    "not started"
+            };
+        });
     };
 
     return formatFloatToDateString(allStations);
@@ -27,14 +36,10 @@ async function getAllStations(): Promise<RechargeEndsFormatted[]> {
 
 async function rechargeStation(token: string, stationID: number, hours: number): Promise<stations["id"]> {
 
-    // verificar se o usuário está autenticado
     const user = await userServices.getUserByToken(token);
-
-    // verificar se a estação existe
     const station = await stationsRepository.getStationById(stationID);
     if (!station) throw new Error("404 this station id does not exist");
 
-    // verificar se a estação já está sendo carregada
     if (station.rechargeEnds > new Date().getTime()) {
         throw new Error("this station already has a recharge in progress");
 
@@ -46,9 +51,7 @@ async function rechargeStation(token: string, stationID: number, hours: number):
         }
     };
 
-    // verificar se o usuário não tem nenhuma recarga em andamento
     const userRecharges = await rechargesRepository.getAllUserRecharges(user.id);
-
     if (userRecharges.length !== 0) {
 
         const lastUserRechargeExpirationTime = userRecharges[0].endRecharge;
@@ -69,17 +72,30 @@ async function rechargeStation(token: string, stationID: number, hours: number):
 
     const isRecharging = true;
     await stationsRepository.updataStationStatus(stationID, isRecharging, endRecharge);
-
     return station.id
 };
 
-function formatTime(time: GLfloat) {
-    return new Date(time).toLocaleString("pt-br").toString()
+async function getStationHistory(stationID: number): Promise<StationHistory[]> {
+
+    const history = await rechargesRepository.getStationRechargeHistory(stationID);
+    const result = history.map(async recharge => {
+
+        return {
+            id: recharge.id,
+            user: await usersRepository.getUserEmailByID(recharge.userID),
+            stationID: recharge.stationID,
+            date: formatedDate(recharge.startRecharge),
+            time: `from: ${formatedHour(recharge.startRecharge)} to: ${formatedHour(recharge.endRecharge)}`
+        }
+    });
+
+    return await Promise.all(result);
 };
 
 const stationService = {
     getAllStations,
-    rechargeStation
+    rechargeStation,
+    getStationHistory
 };
 
 export default stationService;
