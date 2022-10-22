@@ -1,13 +1,11 @@
-import "jest";
+import typeDefs from "../src/graphql/typedefs.js";
+import resolvers from "../src/graphql/resolvers.js";
 
-import typeDefs from "../src/graphql/typedefs";
-import resolvers from "../src/graphql/resolvers";
-
-import checkRawData from "../src/services/bootstrap";
-import userServices from "../src/services/users";
+import checkRawData from "../src/services/bootstrap.js";
+import userServices from "../src/services/users.js";
 
 import responses from "./resposes.js";
-import mutations from "./mutations";
+import mutations from "./mutations.js";
 
 import { ApolloServer } from "apollo-server";
 const server = new ApolloServer({ typeDefs, resolvers });
