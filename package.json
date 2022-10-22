@@ -8,8 +8,8 @@
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "update": "node api/fetch.js",
-    "db": "npx prisma migrate dev && npx prisma migrate reset",
-    "test": "dotenv -e .env.test npx prisma migrate reset && dotenv -e .env.test jest -- -i"
+    "db": "npx prisma generate && npx prisma migrate dev && npx prisma migrate reset",
+    "test": "dotenv -e .env.test npm run db && dotenv -e .env.test jest -- -i"
   },
   "keywords": [],
   "author": "",

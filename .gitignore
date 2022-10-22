@@ -1,9 +1,6 @@
 # fat
 node_modules/
 
-# dev migrations
-prisma/migrations
-
 # environment variables
 .env
 
