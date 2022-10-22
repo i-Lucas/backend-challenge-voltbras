@@ -1,5 +1,18 @@
 <a href="https://wakatime.com/badge/user/f52ac50f-c8e0-4f74-9b43-0db756266fbb/project/fed3c412-090b-40d5-b777-11e941bbb675"><img src="https://wakatime.com/badge/user/f52ac50f-c8e0-4f74-9b43-0db756266fbb/project/fed3c412-090b-40d5-b777-11e941bbb675.svg" alt="wakatime"></a>
 
+# como rodar o projeto
+
+**IMPORTANTE**
+* crie um **.env** e um **.env.test** no formato do arquivo **.env.example**
+
+* atualize os dados
+```js
+  npm run update
+```
+* rode o servidor
+```js
+  npm run dev
+```
 # backend-challenge
 
 O ano é 2118, 100 anos após a fundação da [Voltbras]. Expandimos nosso negócios para gerenciamento de carregamento de veículos espaciais não tripulados com propulsão de íons.
