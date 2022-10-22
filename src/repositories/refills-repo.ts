@@ -30,7 +30,7 @@ async function getStationRechargeHistory(stationID: number): Promise<refills[]> 
 
     return await prisma.refills.findMany({
         where: {
-            id: stationID
+            stationID
         }
     })
 };

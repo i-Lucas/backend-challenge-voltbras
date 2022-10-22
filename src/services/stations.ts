@@ -41,7 +41,7 @@ async function rechargeStation(token: string, stationID: number, hours: number):
     if (!station) throw new Error("404 this station id does not exist");
 
     if (station.rechargeEnds > new Date().getTime()) {
-        throw new Error("this station already has a recharge in progress");
+        throw new Error("409 this station already has a recharge in progress");
 
     } else {
         if (station.isRecharging) {
@@ -76,6 +76,9 @@ async function rechargeStation(token: string, stationID: number, hours: number):
 };
 
 async function getStationHistory(stationID: number): Promise<StationHistory[]> {
+    
+    const station = await stationsRepository.getStationById(stationID);
+    if (!station) throw new Error("404 this station id does not exist");
 
     const history = await rechargesRepository.getStationRechargeHistory(stationID);
     const result = history.map(async recharge => {

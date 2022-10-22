@@ -8,6 +8,8 @@ async function signup(email: string, password: string): Promise<users["id"]> {
     const user = await usersRepository.getUserByEmail(email);
     if (user) throw new Error("409 this user is already registered");
 
+    validate(email, password);
+
     const crypt = await bcrypt.hash(password, 10);
     return await usersRepository.createNewUser(email, crypt);
 };
@@ -32,8 +34,15 @@ async function getUserByToken(token: string): Promise<users> {
 
     const user = await usersRepository.getUserByEmail((<users>tokenData).email);
     if (!user) throw new Error("401 invalid token");
-    
+
     return user;
+};
+
+function validate(email: string, password: string): boolean {
+
+    if (email.length < 5) throw new Error("400 invalid email");
+    if (password.length < 5) throw new Error("400 invalid password");
+    return true;
 };
 
 const userServices = {
